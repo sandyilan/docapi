@@ -1,5 +1,7 @@
 from typing import Any
+
 import structlog
+
 
 class AppError(Exception):
     status_code = 400

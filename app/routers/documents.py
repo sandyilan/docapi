@@ -1,17 +1,16 @@
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from fastapi import APIRouter, File, Form, UploadFile
 
 from app.config import SettingsDep
-from app.schemas import DocumentOut
-
 from app.errors import (
     FileTooLargeError,
     InvalidFileError,
     UnsupportedFileTypeError,
 )
+from app.schemas import DocumentOut
 
 router = APIRouter(prefix="/documents", tags=["documents"])
 
@@ -22,10 +21,10 @@ CHUNK = 1024 * 1024  # 1 MB
 @router.post("", response_model=DocumentOut, status_code=201)
 async def upload_document(
     settings: SettingsDep,
-    file: UploadFile = File(...),
+    file: UploadFile = File(...),  # noqa: B008,
     title: str | None = Form(default=None),
 ):
-    
+
     max_bytes = settings.max_upload_mb * 1024 * 1024
 
     ext = Path(file.filename or "").suffix.lower()
@@ -46,7 +45,7 @@ async def upload_document(
         try:
             data.decode("utf-8")
         except UnicodeDecodeError:
-            raise InvalidFileError("Text file must be UTF-8")
+            raise InvalidFileError("Text file must be UTF-8") from None
 
     doc_id = uuid.uuid4().hex
     upload_dir = Path(settings.upload_dir)
@@ -59,5 +58,5 @@ async def upload_document(
         filename=file.filename or f"{doc_id}{ext}",
         content_type=ALLOWED[ext],
         size_bytes=len(data),
-        created_at=datetime.now(timezone.utc),
+        created_at=datetime.now(UTC),
     )

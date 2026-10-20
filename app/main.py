@@ -1,3 +1,7 @@
+import time
+import uuid
+
+import structlog
 from fastapi import FastAPI, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
@@ -6,13 +10,8 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.config import get_settings
 from app.errors import AppError, error_body
-from app.routers import documents
 from app.logging_config import configure_logging
-
-import time
-import uuid
-
-import structlog
+from app.routers import documents
 
 configure_logging(get_settings().log_level)
 

@@ -81,6 +81,7 @@ def test_unknown_route_json_error(client):
     assert response.status_code == 404
     assert response.json()["error"]["code"] == "http_error"
 
+
 def test_request_id_header_present(client):
     response = client.get("/health")
     assert response.status_code == 200
@@ -90,6 +91,7 @@ def test_request_id_header_present(client):
 def test_custom_request_id_is_echoed(client):
     response = client.get("/health", headers={"X-Request-ID": "abc-123"})
     assert response.headers["X-Request-ID"] == "abc-123"
+
 
 def test_upload_respects_overridden_limit(client, tmp_path):
     app.dependency_overrides[get_settings] = lambda: Settings(
