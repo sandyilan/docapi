@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 
+from app.config import get_settings
 
-app = FastAPI(title="Document API", version="0.1.0")
+app = FastAPI(title=get_settings().app_name, version="0.1.0")
 
 
 @app.get("/health", tags=["system"])
