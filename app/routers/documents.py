@@ -35,17 +35,17 @@ async def upload_document(
     while chunk := await file.read(CHUNK):
         data.extend(chunk)
         if len(data) > max_bytes:
-            raise HTTPException(413, f"File exceeds {settings.max_upload_mb} MB")
+            raise FileTooLargeError(f"File exceeds {settings.max_upload_mb} MB")
 
     if not data:
-        raise HTTPException(422, "File is empty")
+        raise InvalidFileError("File is empty")
     if ext == ".pdf" and not data.startswith(b"%PDF-"):
-        raise HTTPException(422, "File is not a valid PDF")
+        raise InvalidFileError("File is not a valid PDF")
     if ext == ".txt":
         try:
             data.decode("utf-8")
         except UnicodeDecodeError:
-            raise HTTPException(422, "Text file must be UTF-8")
+            raise InvalidFileError("Text file must be UTF-8")
 
     doc_id = uuid.uuid4().hex
     upload_dir = Path(settings.upload_dir)
