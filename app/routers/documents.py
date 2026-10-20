@@ -2,10 +2,16 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
-from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, File, Form, UploadFile
 
 from app.config import get_settings
 from app.schemas import DocumentOut
+
+from app.errors import (
+    FileTooLargeError,
+    InvalidFileError,
+    UnsupportedFileTypeError,
+)
 
 router = APIRouter(prefix="/documents", tags=["documents"])
 
@@ -23,7 +29,7 @@ async def upload_document(
 
     ext = Path(file.filename or "").suffix.lower()
     if ext not in ALLOWED:
-        raise HTTPException(415, "Only .pdf and .txt files are allowed")
+        raise UnsupportedFileTypeError("Only .pdf and .txt files are allowed")
 
     data = bytearray()
     while chunk := await file.read(CHUNK):
