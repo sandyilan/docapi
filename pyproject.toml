@@ -7,7 +7,10 @@ authors = [
     { name = "Sabarish", email = "your_email@example.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "fastapi>=0.151.0",
+    "uvicorn[standard]>=0.54.0",
+]
 
 [project.scripts]
 docapi = "docapi:main"
