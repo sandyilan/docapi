@@ -7,8 +7,50 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from app.config import get_settings
 from app.errors import AppError, error_body
 from app.routers import documents
+from app.logging_config import configure_logging
+
+import time
+import uuid
+
+import structlog
+
+configure_logging(get_settings().log_level)
 
 app = FastAPI(title=get_settings().app_name, version="0.1.0")
+
+logger = structlog.get_logger()
+
+
+@app.middleware("http")
+async def request_id_middleware(request: Request, call_next):
+    incoming = request.headers.get("X-Request-ID", "")
+    request_id = incoming[:128] if incoming else uuid.uuid4().hex
+
+    structlog.contextvars.clear_contextvars()
+    structlog.contextvars.bind_contextvars(
+        request_id=request_id,
+        method=request.method,
+        path=request.url.path,
+    )
+
+    start = time.perf_counter()
+    try:
+        response = await call_next(request)
+    except Exception:
+        logger.exception("unhandled_exception")
+        response = JSONResponse(
+            status_code=500,
+            content=error_body("internal_error", "Internal server error"),
+        )
+
+    duration_ms = round((time.perf_counter() - start) * 1000, 2)
+    response.headers["X-Request-ID"] = request_id
+    logger.info(
+        "request_completed",
+        status_code=response.status_code,
+        duration_ms=duration_ms,
+    )
+    return response
 
 
 @app.exception_handler(AppError)

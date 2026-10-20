@@ -1,5 +1,5 @@
 from typing import Any
-
+import structlog
 
 class AppError(Exception):
     status_code = 400
@@ -27,4 +27,12 @@ class InvalidFileError(AppError):
 
 
 def error_body(code: str, message: str, details: Any = None) -> dict:
-    return {"error": {"code": code, "message": message, "details": details}}
+    request_id = structlog.contextvars.get_contextvars().get("request_id")
+    return {
+        "error": {
+            "code": code,
+            "message": message,
+            "details": details,
+            "request_id": request_id,
+        }
+    }

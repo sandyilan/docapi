@@ -80,3 +80,13 @@ def test_unknown_route_json_error(client):
     response = client.get("/nope")
     assert response.status_code == 404
     assert response.json()["error"]["code"] == "http_error"
+
+def test_request_id_header_present(client):
+    response = client.get("/health")
+    assert response.status_code == 200
+    assert response.headers["X-Request-ID"]
+
+
+def test_custom_request_id_is_echoed(client):
+    response = client.get("/health", headers={"X-Request-ID": "abc-123"})
+    assert response.headers["X-Request-ID"] == "abc-123"
