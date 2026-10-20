@@ -4,7 +4,7 @@ from pathlib import Path
 
 from fastapi import APIRouter, File, Form, UploadFile
 
-from app.config import get_settings
+from app.config import SettingsDep
 from app.schemas import DocumentOut
 
 from app.errors import (
@@ -21,10 +21,11 @@ CHUNK = 1024 * 1024  # 1 MB
 
 @router.post("", response_model=DocumentOut, status_code=201)
 async def upload_document(
+    settings: SettingsDep,
     file: UploadFile = File(...),
     title: str | None = Form(default=None),
 ):
-    settings = get_settings()
+    
     max_bytes = settings.max_upload_mb * 1024 * 1024
 
     ext = Path(file.filename or "").suffix.lower()

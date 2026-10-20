@@ -1,11 +1,15 @@
 from functools import lru_cache
+from typing import Annotated
 
+from fastapi import Depends
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env", env_prefix="APP_", extra="ignore"
+        env_file=".env",
+        env_prefix="APP_",
+        extra="ignore",
     )
 
     app_name: str = "Document API"
@@ -18,3 +22,6 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
+
+
+SettingsDep = Annotated[Settings, Depends(get_settings)]

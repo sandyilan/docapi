@@ -1,4 +1,4 @@
-from app.config import get_settings
+from app.config import Settings, get_settings
 from app.main import app
 
 
@@ -90,3 +90,16 @@ def test_request_id_header_present(client):
 def test_custom_request_id_is_echoed(client):
     response = client.get("/health", headers={"X-Request-ID": "abc-123"})
     assert response.headers["X-Request-ID"] == "abc-123"
+
+def test_upload_respects_overridden_limit(client, tmp_path):
+    app.dependency_overrides[get_settings] = lambda: Settings(
+        _env_file=None, max_upload_mb=1, upload_dir=str(tmp_path)
+    )
+    try:
+        response = client.post(
+            "/documents",
+            files={"file": ("a.txt", b"a" * (2 * 1024 * 1024), "text/plain")},
+        )
+        assert response.status_code == 413
+    finally:
+        app.dependency_overrides.clear()
