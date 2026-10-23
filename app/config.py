@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     max_upload_mb: int = 5
     upload_dir: str = "uploads"
+    database_url: str = ""
 
 
 @lru_cache
