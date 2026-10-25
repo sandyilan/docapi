@@ -10,11 +10,18 @@ requires-python = ">=3.12"
 dependencies = [
     "alembic>=1.20.1",
     "fastapi>=0.151.0",
+    "ollama>=0.6.3",
+    "openai>=3.37.0",
+    "pandas>=3.1.0",
+    "pgvector>=0.5.1",
     "psycopg[binary]>=3.3.6",
     "pydantic-settings>=2.16.0",
+    "pypdf>=6.21.2",
     "python-multipart>=0.0.32",
+    "reportlab>=5.1.0",
     "sqlalchemy>=2.1.6",
     "structlog>=26.1.0",
+    "tiktoken>=0.14.0",
     "uvicorn[standard]>=0.54.0",
 ]
 

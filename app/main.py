@@ -11,7 +11,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from app.config import get_settings
 from app.errors import AppError, error_body
 from app.logging_config import configure_logging
-from app.routers import documents
+from app.routers import ask, conversations, documents, search
 
 configure_logging(get_settings().log_level)
 
@@ -94,3 +94,6 @@ def health() -> dict[str, str]:
 
 
 app.include_router(documents.router)
+app.include_router(search.router)
+app.include_router(ask.router)
+app.include_router(conversations.router)

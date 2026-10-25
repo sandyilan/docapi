@@ -1,0 +1,5 @@
+Dropped row id=6: invalid date 'not-a-date'
+Filled amount for row id=2: nan -> 75.0
+Filled amount for row id=7: 'not-a-number' -> 75.0
+Filled missing name for row id=5
+Removed duplicate row id=4

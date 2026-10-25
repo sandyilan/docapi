@@ -1,0 +1,8 @@
+id,name,amount,date
+1,Asha,120.50,2026-01-05
+2,Ravi,,Jan 6 2026
+3,Meera,75,2026/01/07
+4,Meera,75,2026/01/07
+5,,40,08-Jan-2026
+6,Kiran,35,not-a-date
+7,Neha,not-a-number,2026-01-10
