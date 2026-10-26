@@ -12,6 +12,7 @@ from app.schemas import (
     SearchRequest,
     SearchResponse,
 )
+from app.tracing import tracer
 
 
 router = APIRouter(tags=["search"])
@@ -24,10 +25,12 @@ MIN_VECTOR_DISTANCE = 0.5
 
 @router.post("/search", response_model=SearchResponse)
 def search(payload: SearchRequest, db: Session = Depends(get_db)):
-    query_vector = embed(
-        model="nomic-embed-text",
-        input=payload.query,
-    ).embeddings[0]
+    with tracer.start_as_current_span("retrieval.embed_query") as span:
+        span.set_attribute("embedding.model", "nomic-embed-text")
+        query_vector = embed(
+            model="nomic-embed-text",
+            input=payload.query,
+        ).embeddings[0]
 
     distance = Chunk.embedding.cosine_distance(query_vector).label("distance")
     statement = (
@@ -41,7 +44,9 @@ def search(payload: SearchRequest, db: Session = Depends(get_db)):
         .limit(5)
     )
 
-    rows = db.execute(statement).all()
+    with tracer.start_as_current_span("retrieval.vector_search") as span:
+        rows = db.execute(statement).all()
+        span.set_attribute("retrieval.result_count", len(rows))
 
     return SearchResponse(
         results=[
@@ -59,10 +64,12 @@ def search(payload: SearchRequest, db: Session = Depends(get_db)):
 
 @router.post("/hybrid-search", response_model=HybridSearchResponse)
 def hybrid_search(payload: SearchRequest, db: Session = Depends(get_db)):
-    query_vector = embed(
-        model="nomic-embed-text",
-        input=payload.query,
-    ).embeddings[0]
+    with tracer.start_as_current_span("retrieval.embed_query") as span:
+        span.set_attribute("embedding.model", "nomic-embed-text")
+        query_vector = embed(
+            model="nomic-embed-text",
+            input=payload.query,
+        ).embeddings[0]
 
     vector_distance = Chunk.embedding.cosine_distance(query_vector)
     vector_statement = (
@@ -75,7 +82,10 @@ def hybrid_search(payload: SearchRequest, db: Session = Depends(get_db)):
         .order_by(vector_distance)
         .limit(CANDIDATE_LIMIT)
     )
-    vector_rows = db.execute(vector_statement).all()
+
+    with tracer.start_as_current_span("retrieval.vector_search") as span:
+        vector_rows = db.execute(vector_statement).all()
+        span.set_attribute("retrieval.result_count", len(vector_rows))
 
     text_query = func.plainto_tsquery("english", payload.query)
     text_rank = func.ts_rank(Chunk.search_vector, text_query)
@@ -88,7 +98,10 @@ def hybrid_search(payload: SearchRequest, db: Session = Depends(get_db)):
         .order_by(text_rank.desc())
         .limit(CANDIDATE_LIMIT)
     )
-    text_rows = db.execute(text_statement).all()
+
+    with tracer.start_as_current_span("retrieval.full_text_search") as span:
+        text_rows = db.execute(text_statement).all()
+        span.set_attribute("retrieval.result_count", len(text_rows))
 
     chunks_by_id = {}
     vector_ranks = {}

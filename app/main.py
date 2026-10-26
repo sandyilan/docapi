@@ -6,12 +6,15 @@ from fastapi import FastAPI, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.config import get_settings
 from app.errors import AppError, error_body
 from app.logging_config import configure_logging
+from app.tracing import tracer
 from app.routers import ask, conversations, documents, search
+
 
 configure_logging(get_settings().log_level)
 
@@ -97,3 +100,5 @@ app.include_router(documents.router)
 app.include_router(search.router)
 app.include_router(ask.router)
 app.include_router(conversations.router)
+
+FastAPIInstrumentor.instrument_app(app)

@@ -1,0 +1,30 @@
+{"question":"What does a database index help a database do?","expected_answer":"Find rows faster without scanning every row in a table.","source_document":"01_database_indexes.pdf"}
+{"question":"When are database indexes useful?","expected_answer":"They are useful for columns that are searched or sorted often.","source_document":"01_database_indexes.pdf"}
+{"question":"What is one cost of adding a database index?","expected_answer":"Indexes use extra storage and can make writes slightly slower.","source_document":"01_database_indexes.pdf"}
+{"question":"Do indexes make database writes faster or slower?","expected_answer":"They can make writes slightly slower.","source_document":"01_database_indexes.pdf"}
+{"question":"How does an index help find a row?","expected_answer":"It helps locate rows without scanning the whole table.","source_document":"01_database_indexes.pdf"}
+{"question":"What does a vector represent in the PostgreSQL vector-search document?","expected_answer":"A vector is a list of numbers that represents the meaning of text.","source_document":"02_postgresql_vectors.pdf"}
+{"question":"How are vectors for similar pieces of text related?","expected_answer":"Their vectors tend to be close together.","source_document":"02_postgresql_vectors.pdf"}
+{"question":"What can pgvector help PostgreSQL do?","expected_answer":"Compare vectors and find similar text.","source_document":"02_postgresql_vectors.pdf"}
+{"question":"Are vectors lists of words or numbers?","expected_answer":"They are lists of numbers.","source_document":"02_postgresql_vectors.pdf"}
+{"question":"What does vector search compare to find similar text?","expected_answer":"It compares vectors that represent the meaning of text.","source_document":"02_postgresql_vectors.pdf"}
+{"question":"What does RAG do before asking a language model to answer?","expected_answer":"It searches documents first.","source_document":"03_rag_workflow.pdf"}
+{"question":"What does the application retrieve from the database in a RAG workflow?","expected_answer":"Relevant text chunks.","source_document":"03_rag_workflow.pdf"}
+{"question":"Why are retrieved chunks given to the language model?","expected_answer":"So the model can use the documents to answer.","source_document":"03_rag_workflow.pdf"}
+{"question":"Does RAG search documents before or after asking the model?","expected_answer":"Before asking the model.","source_document":"03_rag_workflow.pdf"}
+{"question":"Where does the application retrieve relevant text chunks from in the RAG workflow?","expected_answer":"From a database.","source_document":"03_rag_workflow.pdf"}
+{"question":"What is a tenant in the tenant-isolation document?","expected_answer":"A tenant is one customer or organization using an application.","source_document":"04_tenant_isolation.pdf"}
+{"question":"Which records should belong to a tenant?","expected_answer":"Every document and chunk should belong to a tenant.","source_document":"04_tenant_isolation.pdf"}
+{"question":"Why must search filter by tenant?","expected_answer":"To prevent one customer from seeing another customer's data.","source_document":"04_tenant_isolation.pdf"}
+{"question":"Can documents and chunks be shared across tenants without filtering?","expected_answer":"Search should filter by tenant so one customer cannot see another customer's data.","source_document":"04_tenant_isolation.pdf"}
+{"question":"What does tenant isolation protect?","expected_answer":"It protects each customer's data from being seen by another customer.","source_document":"04_tenant_isolation.pdf"}
+{"question":"What are chunks in a document-processing system?","expected_answer":"They are smaller pieces made by splitting long documents.","source_document":"05_document_chunking.pdf"}
+{"question":"What balance should chunking aim for?","expected_answer":"Chunks should be small enough to search but large enough to preserve useful context.","source_document":"05_document_chunking.pdf"}
+{"question":"Why use overlap between chunks?","expected_answer":"A small overlap can preserve context at chunk boundaries.","source_document":"05_document_chunking.pdf"}
+{"question":"Should a chunk be as small as possible?","expected_answer":"It should be small enough to search but large enough to keep useful context.","source_document":"05_document_chunking.pdf"}
+{"question":"What kind of documents are split into chunks?","expected_answer":"Long documents are split into smaller pieces called chunks.","source_document":"05_document_chunking.pdf"}
+{"question":"What SQL command creates a B-tree index on a customers email column?","expected_answer":"The provided documents do not say.","source_document":null}
+{"question":"How many database servers does the project run in production?","expected_answer":"The provided documents do not say.","source_document":null}
+{"question":"What exact number of tokens should overlap between adjacent chunks?","expected_answer":"The provided documents do not say an exact number.","source_document":null}
+{"question":"Which vector distance metric does the PostgreSQL vector-search document specify?","expected_answer":"The provided documents do not specify a distance metric.","source_document":null}
+{"question":"How many tenants are currently stored in the database?","expected_answer":"The provided documents do not say.","source_document":null}
