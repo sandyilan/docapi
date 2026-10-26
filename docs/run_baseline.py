@@ -12,7 +12,7 @@ CASES_PATH = ROOT / "docs" / "eval_cases.jsonl"
 OUTPUT_DIR = ROOT / "docs" / "eval_runs"
 API_URL = "http://127.0.0.1:8001/ask"
 TENANT_ID = 1
-PROMPT_VERSION = "ask_v1"
+PROMPT_VERSION = "ask_v2"
 
 
 def read_json_response(raw_body: bytes):

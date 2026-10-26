@@ -21,7 +21,7 @@ router = APIRouter(tags=["RAG"])
 MAX_HISTORY_MESSAGES = 10
 MIN_VECTOR_DISTANCE = 0.5
 
-ASK_PROMPT_VERSION = "ask_v1"
+ASK_PROMPT_VERSION = "ask_v2"
 ASK_PROMPT_PATH = (
     Path(__file__).resolve().parents[2]
     / "prompts"
