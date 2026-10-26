@@ -66,3 +66,12 @@ Replace `notes.txt` with the path to your own text or PDF file:
 
 &#x20;   curl.exe -F "file=@notes.txt" -F "title=My notes" http://127.0.0.1:8000/documents
 
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+## Phase 4 evaluation
+
+Run the API, PostgreSQL, and Ollama first. From the project folder, run:
+
+```powershell
+uv run python docs/run_phase4.py

@@ -1,0 +1,15 @@
+{
+  "baseline_prompt_version": "ask_v1",
+  "new_prompt_version": "ask_v2",
+  "baseline_commit": "d8ecbb85c7ddb1673074d248238df2bbdb75dd6b",
+  "new_commit": "d70ede0f884d9c2b7e64f6783f88e192cc636e5c",
+  "cases": 30,
+  "baseline_successful_responses": 8,
+  "new_successful_responses": 17,
+  "baseline_api_errors": 22,
+  "new_api_errors": 13,
+  "baseline_average_latency_ms": 1504.74,
+  "new_average_latency_ms": 1394.31,
+  "latency_change_percent": -7.34,
+  "new_results_file": "docs\\eval_runs\\baseline_d70ede0.jsonl"
+}
